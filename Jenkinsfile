@@ -7,9 +7,7 @@ pipeline {
             }
         }
         stage("Build") {
-            agent {
-                { dockerfile true}
-            }
+            agent { dockerfile true}
             steps {
                 echo 'SOMEWHERE SHOULD BE DOCKERFILE LOGS'
             }
