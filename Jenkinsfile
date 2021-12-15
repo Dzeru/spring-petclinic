@@ -1,23 +1,18 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-adoptopenjdk-11'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
-        stage("init") {
+        stage("Build") {
+            agent {
+                { dockerfile true}
+            }
             steps {
-                echo 'init init init'
+                echo 'SOMEWHERE SHOULD BE DOCKERFILE LOGS'
             }
         }
-        stage("build") {
+        stage("Upload to dockerhub") {
             steps {
-                sh 'mvn clean install package'
+                echo 'upload to dockerhub'
             }
-        }
-        stage("test") {
-            sh 'mvn test'
         }
     }
     post {
