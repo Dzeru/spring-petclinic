@@ -16,6 +16,9 @@ pipeline {
                 sh 'mvn clean install package'
             }
         }
+        stage("test") {
+            sh 'mvn test'
+        }
     }
     post {
         always {
