@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        JAR_VERSION = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout').trim()
+        JAR_ARTIFACT_ID = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout').trim()
+    }
     stages {
         stage("Init") {
             steps {
@@ -7,7 +11,11 @@ pipeline {
             }
         }
         stage("Build") {
-            agent { dockerfile true}
+            agent {
+                dockerfile {
+                    additionalBuildArgs "--build-arg JAR_VERSION=${JAR_VERSION} JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
+                }
+            }
             steps {
                 echo 'SOMEWHERE SHOULD BE DOCKERFILE LOGS'
             }
