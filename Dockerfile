@@ -1,6 +1,7 @@
 FROM maven:3.8.4-jdk-11 as MAVEN_BUILD
 COPY ./ ./
-RUN mvn -B clean install package -q -DargsLine="-XX:MaxRAM=1g -Xmx=256m"
+RUN java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheapsize|maxram'
+RUN mvn -B clean install package -q -DargsLine="-XX:MaxRAM=2g -Xmx=512m"
 ENTRYPOINT "ls -ahl target/"
 
 FROM openjdk:11.0.7-jdk-slim
