@@ -3,7 +3,6 @@ pipeline {
     environment {
         JAR_VERSION = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout').trim()
         JAR_ARTIFACT_ID = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout').trim()
-        JAR_WORKDIR = "app"
     }
     stages {
         stage("Init") {
@@ -14,7 +13,7 @@ pipeline {
         stage("Build") {
             agent {
                 dockerfile {
-                    additionalBuildArgs "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} --build-arg JAR_WORKDIR=${JAR_WORKDIR}"
+                    additionalBuildArgs "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
                 }
             }
             steps {
