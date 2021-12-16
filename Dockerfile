@@ -7,7 +7,7 @@ RUN mvn -B clean package
 ENTRYPOINT "ls -ahl target/"
 
 FROM openjdk:11.0.7-jre-slim
-COPY --from=MAVEN_BUILD /${JAR_WORKDIR}/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
+COPY --from=build /${JAR_WORKDIR}/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
 
 ENTRYPOINT java
 CMD -jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
