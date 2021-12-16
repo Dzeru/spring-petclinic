@@ -1,10 +1,12 @@
-FROM maven:3.8.4-jdk-11 as MAVEN_BUILD
-COPY ./ ./
-RUN java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheapsize|maxram'
-RUN mvn -B clean install package -q -DargsLine="-XX:MaxRAM=2g -Xmx=512m"
+ARG JAR_WORKDIR=app
+FROM maven:3.6.0-jdk-11 as build
+WORKDIR /${JAR_WORKDIR}
+COPY src ./src
+COPY pom.xml ./
+RUN mvn -B clean package
 ENTRYPOINT "ls -ahl target/"
 
-FROM openjdk:11.0.7-jdk-slim
+FROM openjdk:11.0.7-jre-slim
 COPY --from=MAVEN_BUILD /${JAR_WORKDIR}/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
 
 ENTRYPOINT java
