@@ -14,7 +14,6 @@ pipeline {
             agent {
                 dockerfile {
                     additionalBuildArgs "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
-                    args '-m 3072M'
                 }
             }
             steps {
