@@ -1,8 +1,8 @@
 FROM maven:3.8.4-jdk-11 as MAVEN_BUILD
 WORKDIR ${JAR_WORKDIR}
-COPY src /app/src
-COPY pom.xml /app/
-RUN cd /app
+COPY src ${JAR_WORKDIR}/src
+COPY pom.xml ${JAR_WORKDIR}/
+RUN cd ${JAR_WORKDIR}
 RUN mvn -B clean install package -q
 ENTRYPOINT "ls -ahl target/"
 
