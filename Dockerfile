@@ -1,5 +1,5 @@
 ARG JAR_WORKDIR=app
-FROM maven:3.8.4-jdk-11 as MAVEN_BUILD
+FROM maven:3.6.0-jdk-11 as MAVEN_BUILD
 WORKDIR /${JAR_WORKDIR}
 COPY src ./src
 COPY pom.xml ./
