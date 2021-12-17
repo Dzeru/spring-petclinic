@@ -1,13 +1,13 @@
-ARG JAR_WORKDIR=app
-FROM maven:3.6.0-jdk-11 as build
-WORKDIR /${JAR_WORKDIR}
-COPY src ./src
+FROM maven:3.6.0-jdk-11 AS build
+WORKDIR /petclinic
+
 COPY pom.xml ./
-RUN mvn -B clean package
-ENTRYPOINT "ls -ahl target/"
+COPY src ./src
 
-FROM openjdk:11.0.7-jre-slim
-COPY --from=build /${JAR_WORKDIR}/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
+RUN mvn clean package -q
 
-ENTRYPOINT java
-CMD -jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
+FROM openjdk:11-jre-slim
+
+COPY --from=build /petclinic/target/spring-petclinic-*.jar /petclinic.jar
+
+CMD ["java", "-jar", "petclinic.jar"]
