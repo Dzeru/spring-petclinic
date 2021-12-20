@@ -16,7 +16,7 @@ pipeline {
         stage("Build") {
             steps {
                 script {
-                    def app = docker.build("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} -f Dockerfile .")
+                    docker.build("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} -f Dockerfile .")
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
         }
         stage("Run Spring Pet Clinic") {
             steps {
-                sh 'docker run -p 9000:9000 ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
+                docker.image("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}").withRun('-p 9000:9000')
             }
         }
         stage("Test Image") {
