@@ -74,16 +74,16 @@ pipeline {
     post { 
         success { 
             withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
-            sh ("""
+            sh """
                 curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='Successful build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
-            """)
+            """
             }
         }
         failure { 
             withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
-            sh ("""
+            sh """
                 curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='FAILED build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
-            """)
+            """
             }
         }
     }
