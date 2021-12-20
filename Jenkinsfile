@@ -16,7 +16,7 @@ pipeline {
         stage("Build") {
             agent {
                 dockerfile {
-                    additionalBuildArgs "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
+                    additionalBuildArgs "-t ${DOCKER_HUB_CREDENTIALS}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION} --build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
                     args "-t ${DOCKER_HUB_CREDENTIALS}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
                 }
             }
