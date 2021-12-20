@@ -30,7 +30,8 @@ pipeline {
         }
         stage("Push to Docker Hub") {
             steps {
-                withCredentials([userNamePassword: 'docker_hub_credentials', usernameVariable: DOCKER_HUB_CREDENTIALS_USER]) {
+                withCredentials([
+                    usernamePassword(credentials: 'docker_hub_credentials', usernameVariable: DOCKER_HUB_CREDENTIALS_USER]) {
                     sh "docker push ${DOCKER_HUB_CREDENTIALS_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
                 }
             }
