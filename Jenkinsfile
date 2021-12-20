@@ -41,7 +41,9 @@ pipeline {
         }
         stage("Run Spring Pet Clinic") {
             steps {
-                docker.image("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}").withRun('-p 9000:9000')
+                script {
+                    docker.image("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}").withRun('-p 9000:9000')
+                }
             }
         }
         stage("Test Image") {
