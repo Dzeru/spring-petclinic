@@ -23,7 +23,7 @@ pipeline {
         stage("Login to Docker Hub") {
             when {
                 expression {
-                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'dev'
                 }
             }
             steps {
@@ -37,7 +37,7 @@ pipeline {
         stage("Push to Docker Hub") {
             when {
                 expression {
-                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'dev'
                 }
             }
             steps {
@@ -47,7 +47,7 @@ pipeline {
         stage("Pull from Docker Hub") {
             when {
                 expression {
-                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'dev'
                 }
             }
             steps {
@@ -57,7 +57,7 @@ pipeline {
         stage("Run Spring Pet Clinic") {
             when {
                 expression {
-                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'dev'
                 }
             }
             steps {
