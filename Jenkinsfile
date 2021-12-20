@@ -21,6 +21,11 @@ pipeline {
             }
         }
         stage("Login to Docker Hub") {
+            when {
+                expression {
+                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')
@@ -30,16 +35,31 @@ pipeline {
             }
         }
         stage("Push to Docker Hub") {
+            when {
+                expression {
+                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 sh 'docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
             }
         }
         stage("Pull from Docker Hub") {
+            when {
+                expression {
+                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 sh 'docker pull ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
             }
         }
         stage("Run Spring Pet Clinic") {
+            when {
+                expression {
+                    BRANCH_NAME == 'main' || BRANCH_NAME == 'dev'
+                }
+            }
             steps {
                 sh "docker run -p 9000:9000 ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
             }
@@ -51,8 +71,11 @@ pipeline {
         }
     }
     post {
-        always {
-            echo 'postirony'
+        success {
+            telegramSend(message: 'Build succeeded', chatId: 359507688)
+        }
+        failure {
+            telegramSend(message: 'Build failed', chatId: 359507688)
         }
     }
 }
