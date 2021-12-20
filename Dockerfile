@@ -15,7 +15,8 @@ ARG JAR_VERSION=UNKNOWN
 
 COPY --from=build /app/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar /${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
 
+EXPOSE 9000
 RUN echo 'HELLO'
 
-ENTRYPOINT java
-CMD ["-jar" "${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar"]
+ENTRYPOINT ["java"]
+CMD ["-jar" "-Dserver.port=9000" "${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar"]
