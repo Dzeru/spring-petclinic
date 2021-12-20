@@ -1,3 +1,4 @@
+def app
 pipeline {
     agent any
     environment {
@@ -14,14 +15,8 @@ pipeline {
             }
         }
         stage("Build") {
-            agent {
-                dockerfile {
-                    additionalBuildArgs "-t dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION} --build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}"
-                    args "-t ${DOCKER_HUB_CREDENTIALS}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
-                }
-            }
-            steps {
-                echo 'SOMEWHERE SHOULD BE DOCKERFILE LOGS'
+            script {
+                app = docker.build("dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}")
             }
         }
         stage("Push to Docker Hub") {
