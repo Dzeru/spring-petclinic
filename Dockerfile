@@ -18,4 +18,4 @@ COPY --from=build /app/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar /${JAR_ARTIF
 EXPOSE 9000
 
 ENTRYPOINT ["java"]
-CMD ["-jar" "-Dserver.port=9000" "${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar"]
+CMD ["-jar", "-Dserver.port=9000", "${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar"]
