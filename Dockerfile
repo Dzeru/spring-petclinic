@@ -18,4 +18,4 @@ COPY --from=build /app/target/${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar /${JAR_ARTIF
 RUN echo 'HELLO'
 
 ENTRYPOINT java
-CMD -jar ${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar
+CMD ["-jar" "${JAR_ARTIFACT_ID}-${JAR_VERSION}.jar"]
