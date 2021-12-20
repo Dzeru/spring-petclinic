@@ -75,14 +75,14 @@ pipeline {
         success { 
             withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
             sh """
-                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='Successful build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
+                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='Successful build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*.\n\nBuild is triggered with change ${env.CHANGE_TITLE} (${env.CHANGE_URL}) by ${env.CHANGE_AUTHOR_DISPLAY_NAME}, email: ${env.CHANGE_AUTHOR_EMAIL}.'
             """
             }
         }
         failure { 
             withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
             sh """
-                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='FAILED build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
+                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='FAILED build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*.\n\nBuild is triggered with change ${env.CHANGE_TITLE} (${env.CHANGE_URL}) by ${env.CHANGE_AUTHOR_DISPLAY_NAME}, email: ${env.CHANGE_AUTHOR_EMAIL}.'
             """
             }
         }
