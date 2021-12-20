@@ -16,18 +16,23 @@ pipeline {
         stage("Build") {
             steps {
                 script {
-                    def app = docker.build("dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} -f Dockerfile .")
+                    def app = docker.build("${DOCKER_HUB_CREDENTIALS_USR}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} -f Dockerfile .")
                 }
+            }
+        }
+        stage("Login to Docker Hub") {
+            steps {
+                sh "echo ${DOCKER_HUB_CREDENTIALS_PWD} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
             }
         }
         stage("Push to Docker Hub") {
             steps {
-                sh "docker push ${DOCKER_HUB_CREDENTIALS}/${DOCKER_HUB_REPOSITORY}:${JAR_VERSION}"
+                sh "docker push ${DOCKER_HUB_CREDENTIALS_USR}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
             }
         }
         stage("Pull from Docker Hub") {
             steps {
-                sh "docker pull ${DOCKER_HUB_CREDENTIALS}/${DOCKER_HUB_REPOSITORY}:${JAR_VERSION}"
+                sh "docker pull ${DOCKER_HUB_CREDENTIALS_USR}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
             }
         }
         stage("Test Image") {
