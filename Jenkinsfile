@@ -15,8 +15,10 @@ pipeline {
             }
         }
         stage("Build") {
-            script {
-                app = docker.build("dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}")
+            steps {
+                script {
+                    app = docker.build("dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID}")
+                }
             }
         }
         stage("Push to Docker Hub") {
