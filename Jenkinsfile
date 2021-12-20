@@ -25,7 +25,7 @@ pipeline {
                 withCredentials([
                     usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: DOCKER_HUB_USER, passwordVariable: DOCKER_HUB_PASSWORD)
                     ]) {
-                    sh "echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin"
+                    sh 'echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin'
                 }
             }
         }
@@ -34,13 +34,13 @@ pipeline {
                 withCredentials([
                     usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: DOCKER_HUB_USER, passwordVariable: DOCKER_HUB_PASSWORD)
                     ]) {
-                    sh "docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
+                    sh 'docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
                 }
             }
         }
         stage("Pull from Docker Hub") {
             steps {
-                sh "docker pull dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}"
+                sh 'docker pull dzeru/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
             }
         }
         stage("Test Image") {
