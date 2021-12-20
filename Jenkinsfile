@@ -4,7 +4,6 @@ pipeline {
         JAR_VERSION = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout').trim()
         JAR_ARTIFACT_ID = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout').trim()
         DOCKER_HUB_VERSION = JAR_VERSION.replace("-SNAPSHOT", "-snapshot")
-        DOCKER_HUB_CREDENTIALS = credentials('docker_hub_credentials')
         DOCKER_HUB_REPOSITORY = 'spring-petclinic'
     }
     stages {
@@ -32,7 +31,7 @@ pipeline {
         stage("Push to Docker Hub") {
             steps {
                 withCredentials([
-                    usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')
+                    usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: 'DOCKER_HUB_USER')
                     ]) {
                     sh 'docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
                 }
