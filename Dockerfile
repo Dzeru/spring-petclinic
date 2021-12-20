@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:experimental
-FROM maven:3.6.0-jdk-11 AS build
+FROM openjdk:11-jre-slim AS build
 WORKDIR /app
 
 COPY .mvn .mvn
