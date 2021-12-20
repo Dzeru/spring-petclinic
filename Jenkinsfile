@@ -6,6 +6,7 @@ pipeline {
         DOCKER_HUB_VERSION = JAR_VERSION.replace("-SNAPSHOT", "-snapshot")
         DOCKER_HUB_USER = 'dzeru'
         DOCKER_HUB_REPOSITORY = 'spring-petclinic'
+        TELEGRAM_API_URL = 'https://api.telegram.org/bot'
     }
     stages {
         stage("Init") {
@@ -70,13 +71,20 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            echo 'HI' 
-            telegramSend(message: 'Build succeeded', chatId:  -532640307)
+    post { 
+        success { 
+            withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
+            sh ("""
+                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='Successful build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
+            """)
+            }
         }
-        failure {
-            telegramSend(message: 'Build failed', chatId: -532640307)
+        failure { 
+            withCredentials([string(credentialsId: 'telegram_bot_token', variable: 'TOKEN'), string(credentialsId: 'telegram_notification_channel', variable: 'CHAT_ID')]) {
+            sh ("""
+                curl -s -X POST ${TELEGRAM_API_URL}${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='FAILED build *${env.BUILD_TAG}* for branch *${env.GIT_BRANCH}*'
+            """)
+            }
         }
     }
 }
