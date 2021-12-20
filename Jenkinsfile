@@ -39,6 +39,11 @@ pipeline {
                 sh 'docker pull ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
             }
         }
+        stage("Run Spring Pet Clinic") {
+            steps {
+                sh 'docker run -p 9000:9000 ${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}'
+            }
+        }
         stage("Test Image") {
             steps {
                 echo "curl test..."
