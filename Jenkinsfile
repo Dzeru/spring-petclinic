@@ -73,10 +73,10 @@ pipeline {
     post {
         success {
             echo 'HI' 
-            telegramSend(message: 'Build succeeded', chatId: '-532640307')
+            telegramSend(message: 'Build succeeded', chatId:  -532640307)
         }
         failure {
-            telegramSend(message: 'Build failed', chatId: '-532640307')
+            telegramSend(message: 'Build failed', chatId: -532640307)
         }
     }
 }
