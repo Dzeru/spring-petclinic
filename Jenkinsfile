@@ -1,4 +1,3 @@
-def app
 pipeline {
     agent any
     environment {
