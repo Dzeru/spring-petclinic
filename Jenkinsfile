@@ -1,12 +1,12 @@
 def nameNetwork(String prefix) {
-    return prefix + "-${env.BUILD_TAG}-" + UUID.randomUUID().toString()
+    return prefix + "-" + UUID.randomUUID().toString()
 }
 
 def petclinicNetwork
 def curlNetwork
 
 def nameContainer(String prefix) {
-    return prefix + "-cont-${env.BUILD_TAG}-" + UUID.randomUUID().toString()
+    return prefix + "-cont-" + UUID.randomUUID().toString()
 }
 
 def petclinicContainer
